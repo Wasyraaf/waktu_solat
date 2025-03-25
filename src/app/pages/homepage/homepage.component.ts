@@ -1,4 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { PrayerTimeService } from '../../prayer-time.service';
+ // ✅ Correct import
 
 @Component({
   selector: 'app-homepage',
@@ -8,10 +10,19 @@ import { Component, AfterViewInit } from '@angular/core';
 export class HomepageComponent implements AfterViewInit {
   slideIndex = 0;
   totalSlides = 0;
+  prayerTimes: any = {}; // ✅ Ensure a default object
+
+  constructor(private prayerTimeService: PrayerTimeService) {}
+
+  ngOnInit() {
+    this.prayerTimeService.getPrayerTimes().subscribe((data: any) => { // ✅ Added explicit type
+      this.prayerTimes = data.data.timings;
+    });
+  }
 
   ngAfterViewInit() {
     this.totalSlides = document.querySelectorAll('.slider img').length;
-    setInterval(() => this.moveSlide(1), 3000); // Auto-slide every 3s
+    setInterval(() => this.moveSlide(1), 3000);
   }
 
   moveSlide(direction: number) {
