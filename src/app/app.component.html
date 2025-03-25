@@ -1,29 +1,32 @@
 <header>
   <div class="top-bar">
     <div class="logo">
-      <img src="/images/logo_waktusolat.png" alt="Logo">
-      <h1>WAKTU <strong>SOLAT</strong><br><span>Malaysia</span></h1>
+      <img src="/images/logo_waktusolat.png" alt="Logo" >
+      <h1>WAKTU SOLAT</h1>
+      <p>Malaysia</p>
     </div>
 
     <div class="language-selector">
+    
+      <nav class="navbar">
+        <ul>
+          <li><a href="#">HOME</a></li>
+          <li class="dropdown">
+            <a href="#">MASJID ▾</a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Masjid 1</a></li>
+              <li><a href="#">Masjid 2</a></li>
+              <li><a href="#">Masjid 3</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
       <p>بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
       <select>
         <option value="ms">🇲🇾</option>
       </select>
     </div>
   </div>
-
-  <nav class="navbar">
-    <ul>
-      <li><a href="#">HOME</a></li>
-      <li class="dropdown">
-        <a href="#">MASJID ▾</a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Masjid 1</a></li>
-          <li><a href="#">Masjid 2</a></li>
-          <li><a href="#">Masjid 3</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
 </header>
+<router-outlet></router-outlet>
+
