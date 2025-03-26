@@ -1,30 +1,53 @@
+<h1 id="malaysia-time"></h1>
 <body>
-    
 
 <div class="parent">
-    <div class="slider-container">
+
+  <div class="prayer-times-container">
+    <h2>Islamic Prayer Times - Cyberjaya</h2>
+    <ul class="prayer-list">
+      <li><span class="prayer-name">Fajr</span> <span class="prayer-time">{{ prayerTimes.Fajr }}</span></li>
+      <li><span class="prayer-name">Sunrise</span> <span class="prayer-time">{{ prayerTimes.Sunrise }}</span></li>
+      <li><span class="prayer-name">Dhuhr</span> <span class="prayer-time">{{ prayerTimes.Dhuhr }}</span></li>
+      <li><span class="prayer-name">Asr</span> <span class="prayer-time">{{ prayerTimes.Asr }}</span></li>
+      <li><span class="prayer-name">Maghrib</span> <span class="prayer-time">{{ prayerTimes.Maghrib }}</span></li>
+      <li><span class="prayer-name">Isha</span> <span class="prayer-time">{{ prayerTimes.Isha }}</span></li>
+    </ul>
+  </div>
+
+  <div class="slider-container">
         <div class="slider">
           <img src="/images/masjid-1.jpg" alt="Image 1">
           <img src="/images/masjid-2.jpg" alt="Image 2">
           <img src="/images/masjid-3.jpeg" alt="Image 3">
         </div>
-        <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
-        <button class="next" onclick="moveSlide(1)">&#10095;</button>
-    </div>
-      
-    <div class="prayer-times">
-        <h2>Islamic Prayer Times - Cyberjaya</h2>
-        <ul>
-          <li>Fajr: {{ prayerTimes.Fajr }}</li>
-          <li>Sunrise: {{ prayerTimes.Sunrise }}</li>
-          <li>Dhuhr: {{ prayerTimes.Dhuhr }}</li>
-          <li>Asr: {{ prayerTimes.Asr }}</li>
-          <li>Maghrib: {{ prayerTimes.Maghrib }}</li>
-          <li>Isha: {{ prayerTimes.Isha }}</li>
-        </ul>
-      </div>
+  </div>
+    
       
     <div class="div3">HELLLLOOOOOOOO</div>
 </div>
+<script>
+  async function fetchMalaysiaTime() {
+    try {
+      const response = await fetch("https://worldtimeapi.org/api/timezone/Asia/Kuala_Lumpur");
+      if (!response.ok) throw new Error("Failed to fetch time");
+      
+      const data = await response.json();
+      const dateTime = new Date(data.datetime).toLocaleTimeString("en-US", { 
+        hour: "2-digit", 
+        minute: "2-digit", 
+        second: "2-digit", 
+        hour12: true 
+      });
 
+      document.getElementById("malaysia-time").innerText = `Malaysia Time: ${dateTime}`;
+    } catch (error) {
+      console.error("Error fetching time:", error);
+      document.getElementById("malaysia-time").innerText = "Failed to load time.";
+    }
+  }
+
+  fetchMalaysiaTime();
+  setInterval(fetchMalaysiaTime, 60000); // Update every minute
+</script>
 </body>
