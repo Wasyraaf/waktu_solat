@@ -1,32 +1,106 @@
-<header>
-  <div class="top-bar">
-    <div class="logo">
-      <img src="/images/logo_waktusolat.png" alt="Logo" >
-      <h1>WAKTU SOLAT</h1>
-      <p>Malaysia</p>
+<div class="app-container">
+  
+  <header class="header">
+    <div class="location-badge" (click)="toggleSearch()" style="cursor: pointer;">
+      <i class="fa-solid fa-location-dot"></i>
+      <span>{{ currentLocation }}</span>
     </div>
-
-    <div class="language-selector">
     
-      <nav class="navbar">
-        <ul>
-          <li><a href="#">HOME</a></li>
-          <li class="dropdown">
-            <a href="#">MASJID ▾</a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Masjid 1</a></li>
-              <li><a href="#">Masjid 2</a></li>
-              <li><a href="#">Masjid 3</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-      <p>بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
-      <select>
-        <option value="ms">🇲🇾</option>
-      </select>
+    <div class="header-actions" style="display: flex; gap: 0.75rem;">
+      <button class="settings-btn" (click)="toggleTheme()" style="background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-dim);">
+        <i class="fa-solid" [class.fa-moon]="!isDarkMode" [class.fa-sun]="isDarkMode"></i>
+      </button>
+      
+      <div class="settings-btn" (click)="toggleSearch()">
+        <i class="fa-solid fa-search"></i>
+      </div>
     </div>
-  </div>
-</header>
-<app-homepage></app-homepage>
+  </header>
 
+  <main class="main-content">
+    
+    <section class="hero-section">
+      <div class="date-display">
+        <span class="gregorian">{{ currentDate | date:'EEEE, d MMMM y' }}</span>
+        <span class="hijri">{{ hijriDate }}</span>
+      </div>
+      
+      <div class="time-display">
+        <h1>{{ currentDate | date:'HH:mm' }}</h1>
+        <p>{{ nextPrayer }}</p>
+      </div>
+    </section>
+
+    <section class="prayer-times-grid">
+      @for (prayer of prayerTimes; track prayer.name) {
+        <div class="prayer-card" [class.active]="prayer.active">
+          <div class="prayer-info">
+            <span class="prayer-name">{{ prayer.name }}</span>
+            <span class="prayer-time">{{ prayer.time }}</span>
+          </div>
+          <div class="prayer-icon">
+            @if (prayer.name === 'Subuh') { <i class="fa-solid fa-cloud-sun"></i> }
+            @else if (prayer.name === 'Zohor') { <i class="fa-solid fa-sun"></i> }
+            @else if (prayer.name === 'Asar') { <i class="fa-solid fa-cloud-sun-rain"></i> }
+            @else if (prayer.name === 'Maghrib') { <i class="fa-solid fa-moon"></i> }
+            @else if (prayer.name === 'Isyak') { <i class="fa-solid fa-star-and-crescent"></i> }
+            @else { <i class="fa-regular fa-clock"></i> }
+          </div>
+        </div>
+      }
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Waktu Solat App</p>
+  </footer>
+
+  @if (showSearch) {
+    <div class="search-backdrop" (click)="toggleSearch()">
+      <div class="search-container" (click)="$event.stopPropagation()">
+        <div class="search-header">
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            @if (selectedState) {
+              <button class="back-btn" (click)="backToStates()">
+                <i class="fa-solid fa-arrow-left"></i>
+              </button>
+            }
+            <h3>{{ selectedState ? 'Pilih Daerah' : 'Pilih Negeri' }}</h3>
+          </div>
+          <button class="close-btn" (click)="toggleSearch()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        
+        <input 
+          #searchInput
+          type="text" 
+          class="search-input" 
+          [placeholder]="selectedState ? 'Cari daerah...' : 'Cari negeri...'" 
+          (input)="onSearchInput($event)"
+          autofocus
+        >
+        
+        <div class="zones-list">
+          @if (!selectedState) {
+            @for (state of filteredStates; track state) {
+              <div class="zone-item" (click)="selectState(state); searchInput.value = ''">
+                <span class="zone-district">{{ state }}</span>
+                <i class="fa-solid fa-chevron-right" style="margin-left: auto; opacity: 0.5;"></i>
+              </div>
+            }
+          } @else {
+            @for (zone of filteredZones; track zone.jakimCode) {
+              <div class="zone-item" (click)="selectZone(zone)">
+                <span class="zone-district">{{ zone.daerah }}</span>
+                <span class="zone-code">{{ zone.jakimCode }}</span>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+</div>
