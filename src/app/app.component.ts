@@ -1,13 +1,15 @@
-import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { HomepageComponent } from "./pages/homepage/homepage.component";
+import { SolatResponse, SolatService, Zone } from './solat.service';
 import { DOCUMENT } from '@angular/common';
-import { DatePipe } from '@angular/common';
-import { SolatService, SolatResponse, Zone } from './solat.service';
 
 @Component({
   selector: 'app-root',
-  imports: [DatePipe],
-  templateUrl: 'app.component.html',
-  styleUrl: 'app.component.css'
+  standalone: true,
+  imports: [RouterOutlet, HomepageComponent], // Remove HttpClientModule from here
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
   title = 'Waktu Solat';
